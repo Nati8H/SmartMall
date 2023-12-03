@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head th:replace="~{fragments/head}">
+</head>
+<body>
+<section class="login">
+    <header>
+        <nav th:replace="~{fragments/navbar}"></nav>
+    </header>
+
+    <div class="login-container" id="login-container">
+        <div class="form-container sign-up-container">
+            <form class="login-form" action="#">
+                <h1 class="login-heading">Create Account</h1>
+                <input class="login-input" type="text" placeholder="Name" />
+                <input class="login-input" type="email" placeholder="Email" />
+                <input class="login-input" type="password" placeholder="Password" />
+                <button class="login-button">Sign Up</button>
+            </form>
+        </div>
+        <div class="form-container sign-in-container">
+            <form class="login-form" action="#">
+                <h1 class="login-heading">Sign in</h1>
+                <input class="login-input" type="email" placeholder="Email" />
+                <input class="login-input" type="password" placeholder="Password" />
+                <a class="login-a" href="#">Forgot your password?</a>
+                <button class="login-button">Sign In</button>
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1 class="login-heading">Welcome Back!</h1>
+                    <p class="login-p">To keep connected with us please login with your personal info</p>
+                    <button class="ghost login-button" id="signIn">Sign In</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1 class="login-heading">Hello, Friend!</h1>
+                    <p class="login-p">Enter your personal details and start journey with us</p>
+                    <button class="ghost login-button" id="signUp">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    <footer th:replace="~{fragments/footer}"></footer>
+
+    <div th:replace="~{fragments/scripts}"></div>
+    <script src="../js/login.js"></script>
+</body>
+</html>

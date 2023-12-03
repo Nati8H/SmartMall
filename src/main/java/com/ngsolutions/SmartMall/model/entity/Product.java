@@ -17,6 +17,12 @@ public class Product extends BaseEntity{
     @Column
     private byte[] photo;
 
+    @Column
+    private double price;
+
+    @Column
+    private double discount;
+
     @JoinColumn(name = "categoryId")
     @ManyToOne
     private Category category;
@@ -62,5 +68,21 @@ public class Product extends BaseEntity{
 
     public void setCurrency(Currency currency) {
         this.currency = currency;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public double getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(double discount) {
+        this.discount = discount;
     }
 }
