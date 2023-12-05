@@ -2226,3 +2226,48 @@ a.text-dark:hover, a.text-dark:focus {
 .owl-carousel button.owl-dot.active {
   background-color: #6C55F9;
 }
+
+.product-form{
+  width: 39%;
+  margin-right: 5%;
+  border: solid #6C55F9;
+  border-radius: 20px;
+  margin-top: 50px;
+  margin-bottom: 25px;
+  height: 600px;
+  overflow-y: hidden;
+}
+
+.product-form-inner{
+  padding: 0px 25px 25px;
+  height: 600px;
+  overflow-y: scroll;
+}
+
+.photo-p{
+  margin-bottom: -30px !important;
+  margin-top: 20px !important;
+}
+
+.add-product-img{
+  width: 600px;
+  height: 600px;
+  margin: auto;
+}
+
+.category-form{
+  width: 39%;
+  margin-right: 5%;
+  border: solid #6C55F9;
+  border-radius: 20px;
+  margin-top: 50px;
+  margin-bottom: 25px;
+  height: 600px;
+  overflow-y: hidden;
+}
+
+.category-form-inner{
+  padding: 0px 25px 25px;
+  height: 600px;
+  overflow-y: scroll;
+}

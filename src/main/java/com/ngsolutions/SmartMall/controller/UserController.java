@@ -10,4 +10,9 @@ public class UserController {
     public ModelAndView login() {
         return new ModelAndView("login");
     }
+
+    @GetMapping("/edit-profile")
+    public ModelAndView editProfile() {
+        return new ModelAndView("edit-profile");
+    }
 }

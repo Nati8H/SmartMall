@@ -13,6 +13,10 @@ public class Category extends BaseEntity{
     @NotNull
     private String name;
 
+    @Lob
+    @Column(columnDefinition="BLOB")
+    private byte[] photo;
+
     @ManyToOne
     @NotNull
     private User user;
@@ -42,5 +46,13 @@ public class Category extends BaseEntity{
 
     public void setProducts(List<Product> products) {
         this.products = products;
+    }
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
     }
 }
