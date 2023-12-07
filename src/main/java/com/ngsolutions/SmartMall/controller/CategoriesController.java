@@ -7,7 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class CategoriesController {
 
-    @GetMapping("/add-category")
+    @GetMapping("/categories/add")
     public ModelAndView addCategory() {
         return new ModelAndView("add-category");
     }

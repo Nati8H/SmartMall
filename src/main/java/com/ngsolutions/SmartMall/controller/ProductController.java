@@ -20,14 +20,12 @@ public class ProductController {
     private final ProductService productService;
     private final CategoryService categoryService;
 
-//    private final LoggedUser loggedUser;
-
     public ProductController(ProductService productService, CategoryService categoryService) {
         this.productService = productService;
         this.categoryService = categoryService;
     }
 
-    @GetMapping("/add-product")
+    @GetMapping("/products/add")
     public ModelAndView addProduct(Model model) {
         if (!model.containsAttribute("productsAddBindingModel")) {
             model.addAttribute("productsAddBindingModel", ProductsAddBindingModel.empty());
@@ -51,6 +49,6 @@ public class ProductController {
 //        wordService.add(loggedUser.getUsername(), productsAddBindingModel);
         productService.add("nati", productsAddBindingModel);
 
-        return new ModelAndView("redirect:/home");
+        return new ModelAndView("index");
     }
 }

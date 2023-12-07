@@ -1,23 +1,22 @@
 package com.ngsolutions.SmartMall.model.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import com.ngsolutions.SmartMall.model.enums.RoleEnum;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "roles")
 public class Role extends BaseEntity{
 
-    @Column
     @NotNull
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private RoleEnum role;
 
-    public String getName() {
-        return name;
+    public RoleEnum getRole() {
+        return role;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setRole(RoleEnum role) {
+        this.role = role;
     }
 }
