@@ -15,7 +15,7 @@ public class Product extends BaseEntity{
     private String description;
 
     @Lob
-    @Column(columnDefinition="BLOB")
+    @Column(columnDefinition="LONGBLOB")
     private byte[] photo;
 
     @Column

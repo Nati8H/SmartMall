@@ -11,6 +11,7 @@ import com.ngsolutions.SmartMall.utils.ImageEncryptor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Currency;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -67,7 +68,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = new Product();
         product.setName(productsAddBindingModel.getName());
         product.setCategory(this.categoryRepository.findById(productsAddBindingModel.getCategoryId()).get());
-        product.setCurrency(productsAddBindingModel.getCurrency());
+        product.setCurrency(Currency.getInstance(productsAddBindingModel.getCurrencyCode()));
         product.setDiscount(productsAddBindingModel.getDiscount());
         product.setPrice(productsAddBindingModel.getPrice());
 

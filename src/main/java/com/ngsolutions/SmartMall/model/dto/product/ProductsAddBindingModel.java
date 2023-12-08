@@ -23,7 +23,7 @@ public class ProductsAddBindingModel {
 
     private Long categoryId;
 
-    private Currency currency;
+    private String currencyCode;
 
     public String getName() {
         return name;
@@ -73,12 +73,12 @@ public class ProductsAddBindingModel {
         this.categoryId = categoryId;
     }
 
-    public Currency getCurrency() {
-        return currency;
+    public String getCurrencyCode() {
+        return currencyCode;
     }
 
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
+    public void setCurrencyCode(String currencyCode) {
+        this.currencyCode = currencyCode;
     }
 
     public static ProductsAddBindingModel empty() {

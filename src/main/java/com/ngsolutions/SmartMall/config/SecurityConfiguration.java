@@ -2,11 +2,12 @@ package com.ngsolutions.SmartMall.config;
 
 import com.ngsolutions.SmartMall.repo.UserRepository;
 import com.ngsolutions.SmartMall.service.impl.SmartMallUserDetailsService;
+import com.ngsolutions.SmartMall.service.oauth.OAuthSuccessHandler;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,7 +18,6 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @EnableMethodSecurity
 @Configuration
-@PropertySource("application.yml")
 public class SecurityConfiguration {
 
     private final String rememberMeKey;
@@ -28,15 +28,17 @@ public class SecurityConfiguration {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity, OAuthSuccessHandler oAuthSuccessHandler) throws Exception {
         return httpSecurity.authorizeHttpRequests(
                 // Define which urls are visible by which users
                 authorizeRequests -> authorizeRequests
                         // All static resources which are situated in js, images, css are available for anyone
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                        .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
                         // Allow anyone to see the home page, the registration page and the login form
                         .requestMatchers("/", "/users/login", "/users/register", "/users/login-error").permitAll()
                         .requestMatchers("/categories/add").permitAll()
+                        .requestMatchers("/products/add").permitAll()
                         .requestMatchers("/products/all").permitAll()
                         .requestMatchers(HttpMethod.GET, "/product/**").permitAll()
                         .requestMatchers("/home", "/about", "/services", "/blog", "/contact", "/blog-single", "/edit-profile").permitAll()
@@ -52,7 +54,7 @@ public class SecurityConfiguration {
                             // The names of the input fields (in our case in auth-login.html)
                             .usernameParameter("email")
                             .passwordParameter("password")
-                            .defaultSuccessUrl("/")
+                            .defaultSuccessUrl("/home", true)
                             .failureForwardUrl("/users/login-error");
                 }
         ).logout(
@@ -66,12 +68,13 @@ public class SecurityConfiguration {
                             .invalidateHttpSession(true);
                 }
         ).rememberMe(
-                rememberMe -> {
-                    rememberMe
-                            .key(rememberMeKey)
-                            .rememberMeParameter("rememberme")
-                            .rememberMeCookieName("rememberme");
-                }
+                rememberMe ->
+                        rememberMe
+                                .key(rememberMeKey)
+                                .rememberMeParameter("rememberme")
+                                .rememberMeCookieName("rememberme")
+        ).oauth2Login(
+                oauth -> oauth.successHandler(oAuthSuccessHandler)
         ).build();
     }
 

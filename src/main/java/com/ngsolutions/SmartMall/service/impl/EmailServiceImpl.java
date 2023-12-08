@@ -1,6 +1,7 @@
 package com.ngsolutions.SmartMall.service.impl;
 
 import com.ngsolutions.SmartMall.service.EmailService;
+import com.ngsolutions.SmartMall.service.aop.WarnIfExecutionExceeds;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,18 +28,19 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
-    public void sendRegistrationEmail(String userEmail, String userName)  {
+    @WarnIfExecutionExceeds(timeInMillis = 600)
+    public void sendRegistrationEmail(String email, String username, String activationCode)  {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
 
         try {
 
-            mimeMessageHelper.setTo(userEmail);
+            mimeMessageHelper.setTo(email);
             mimeMessageHelper.setFrom(smartMallEmail);
             mimeMessageHelper.setReplyTo(smartMallEmail);
             mimeMessageHelper.setSubject("Welcome to SmartMall!");
-            mimeMessageHelper.setText(generateRegistrationEmailBody(userName), true);
+            mimeMessageHelper.setText(generateRegistrationEmailBody(username, activationCode), true);
 
             javaMailSender.send(mimeMessageHelper.getMimeMessage());
 
@@ -47,10 +49,11 @@ public class EmailServiceImpl implements EmailService {
         }
     }
 
-    private String generateRegistrationEmailBody(String userName) {
+    private String generateRegistrationEmailBody(String username, String activationCode) {
 
         Context context = new Context();
-        context.setVariable("username", userName);
+        context.setVariable("username", username);
+        context.setVariable("activation_code", activationCode);
 
         return templateEngine.process("email/registration-email", context);
     }

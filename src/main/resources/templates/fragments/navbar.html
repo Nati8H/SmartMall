@@ -1,8 +1,10 @@
+<html lang="en" xmlns:sec="http://www.thymeleaf.org">
 <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-light navbar-float">
     <div class="container">
         <a th:href="@{/home}" class="navbar-brand">Smart<span class="text-primary">Mall</span></a>
 
-        <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent"
+                aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -25,10 +27,23 @@
                 </li>
             </ul>
 
-            <div class="ml-auto">
-                <a th:href="@{/users/login}" class="btn btn-outline rounded-pill">Sign in</a>
-                <a th:href="@{/users/register}" class="btn btn-outline rounded-pill">Sign up</a>
+            <div sec:authorize="!isAuthenticated()" class="ml-auto">
+                <a th:href="@{/users/login}" class="btn btn-outline rounded-pill">Sign
+                    in</a>
+                <a th:href="@{/users/register}" class="btn btn-outline rounded-pill">Sign
+                    up</a>
+            </div>
+
+            <div sec:authorize="isAuthenticated()" class="ml-auto">
+                <div class="logged-user">
+                    Welcome, <th:block sec:authentication="name"></th:block>!
+                </div>
+                <form th:method="post"
+                      th:action="@{/users/logout}">
+                    <input type="submit" class="btn btn-outline rounded-pill" value="Logout"/>
+                </form>
             </div>
         </div>
     </div>
 </nav>
+</html>

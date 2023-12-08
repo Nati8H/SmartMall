@@ -11,7 +11,7 @@
 <main>
     <h2 class="mb-5" style="margin: 120px 44% 0px 44%;">Add product</h2>
     <div style="display: flex">
-        <img class="add-product-img" src="../img/add-product.jpg">
+        <img class="add-product-img" src="../images/add-product.jpg">
 
         <div class="product-form">
             <div class="product-form-inner">
@@ -26,7 +26,7 @@
                         <label for="image" id="drop-area">
                             <input name="photo" type="file" accept="image/*" id="image" hidden>
                             <div id="img-view">
-                                <img src="../img/upload-image-icon.png">
+                                <img src="../images/upload-image-icon.png">
                                 <p>Drag and drop or click here to upload image</p>
                             </div>
                         </label>
@@ -35,6 +35,15 @@
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input name="name" type="text" class="form-control" id="name">
+                    </div>
+
+                    <div class="form-group">
+                        <ul>
+                            <li th:each="category : ${categories}"
+                                th:value="${category.getId()}">
+                                <a th:href="@{/categories/add}" th:text="${category.getName()}"></a>
+                            </li>
+                        </ul>
                     </div>
 
                     <div class="form-group">
@@ -55,8 +64,20 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="currency">Currency</label>
-                        <select name="currency" class="form-control" id="currency"></select>
+                        <label for="currencyCode">Currency</label>
+                        <select id="currencyCode"
+                                name="currencyCode"
+                                class="form-control">
+                            <option value="">- Select a currency -</option>
+                            <option
+                                    th:each="currency : ${currencies}"
+                                    th:text="${currency.getName()}"
+                                    th:value="${currency.getCurrencyCode()}"
+                                    th:selected="*{currencyCode} == ${currency.getCurrencyCode()}">
+                                Model
+                            </option>
+
+                        </select>
                     </div>
 
                     <div class="form-group">
@@ -71,8 +92,7 @@
 
                     <div class="form-group">
                         <label for="description">Description</label>
-                        <textarea name="description" id="description" cols="30" rows="8"
-                                  class="form-control"></textarea>
+                        <textarea name="description" id="description" cols="30" rows="8" class="form-control"></textarea>
                     </div>
 
                     <div class="form-group">

@@ -40,7 +40,8 @@ public class User extends BaseEntity {
     @Column
     private String shopName;
 
-    @Column
+    @Lob
+    @Column(columnDefinition="LONGBLOB")
     private byte[] shopPhoto;
 
     @Column

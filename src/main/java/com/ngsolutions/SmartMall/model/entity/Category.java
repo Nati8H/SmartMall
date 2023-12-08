@@ -14,7 +14,7 @@ public class Category extends BaseEntity{
     private String name;
 
     @Lob
-    @Column(columnDefinition="BLOB")
+    @Column(columnDefinition="LONGBLOB")
     private byte[] photo;
 
     @ManyToOne

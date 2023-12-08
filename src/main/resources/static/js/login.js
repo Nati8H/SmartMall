@@ -9,3 +9,7 @@ signUpButton.addEventListener('click', () => {
 signInButton.addEventListener('click', () => {
     container.classList.remove("right-panel-active");
 });
+
+if(window.location.pathname.endsWith('register')){
+    signUpButton.click();
+}
