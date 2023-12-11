@@ -33,10 +33,10 @@ public class ImageEncryptorImpl implements ImageEncryptor {
     }
 
     @Override
-    public String DecryptImage(byte[] image) throws IOException {
+    public String DecryptImage(byte[] image) {
         String imageBase64 = "";
         try {
-            imageBase64 = new String(Base64.getDecoder().decode(image));
+            imageBase64 = new String(Base64.getEncoder().encode(image));
         }
         catch (Exception e){
             return null;

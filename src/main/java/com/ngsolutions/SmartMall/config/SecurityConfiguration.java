@@ -40,6 +40,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/categories/add").permitAll()
                         .requestMatchers("/products/add").permitAll()
                         .requestMatchers("/products/all").permitAll()
+                        .requestMatchers("products/all/{id}").permitAll()
                         .requestMatchers(HttpMethod.GET, "/product/**").permitAll()
                         .requestMatchers("/home", "/about", "/services", "/blog", "/contact", "/blog-single", "/edit-profile").permitAll()
                         // .requestMatchers("/products").hasRole(RoleEnum.ADMIN.name())

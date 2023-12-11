@@ -13,6 +13,9 @@ public class Category extends BaseEntity{
     @NotNull
     private String name;
 
+    @Column
+    private String description;
+
     @Lob
     @Column(columnDefinition="LONGBLOB")
     private byte[] photo;
@@ -54,5 +57,13 @@ public class Category extends BaseEntity{
 
     public void setPhoto(byte[] photo) {
         this.photo = photo;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

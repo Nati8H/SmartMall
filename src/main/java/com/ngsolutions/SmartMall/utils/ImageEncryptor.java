@@ -8,5 +8,5 @@ public interface ImageEncryptor {
 
     public byte[] EncryptImage(MultipartFile file) throws IOException;
 
-    public String DecryptImage(byte[] image) throws IOException;
+    public String DecryptImage(byte[] image);
 }

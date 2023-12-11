@@ -44,15 +44,11 @@ public class ProductController {
     public ModelAndView add(
             @ModelAttribute("productsAddBindingModel") @Valid ProductsAddBindingModel productsAddBindingModel,
             BindingResult bindingResult) throws IOException {
-//        if (!loggedUser.isLogged()) {
-//            return new ModelAndView("redirect:/");
-//        }
 
         if (bindingResult.hasErrors()) {
             return new ModelAndView("add-product");
         }
-//        wordService.add(loggedUser.getUsername(), productsAddBindingModel);
-        productService.add("nati", productsAddBindingModel);
+        productService.add(productsAddBindingModel);
 
         return new ModelAndView("index");
     }

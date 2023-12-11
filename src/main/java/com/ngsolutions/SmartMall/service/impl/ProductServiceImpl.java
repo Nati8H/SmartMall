@@ -1,17 +1,24 @@
 package com.ngsolutions.SmartMall.service.impl;
 
+import com.ngsolutions.SmartMall.model.dto.product.ProductDisplayDTO;
 import com.ngsolutions.SmartMall.model.dto.product.ProductsAddBindingModel;
+import com.ngsolutions.SmartMall.model.entity.Category;
 import com.ngsolutions.SmartMall.model.entity.Product;
-import com.ngsolutions.SmartMall.model.entity.User;
 import com.ngsolutions.SmartMall.repo.CategoryRepository;
 import com.ngsolutions.SmartMall.repo.ProductRepository;
 import com.ngsolutions.SmartMall.repo.UserRepository;
 import com.ngsolutions.SmartMall.service.ProductService;
 import com.ngsolutions.SmartMall.utils.ImageEncryptor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Currency;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -28,12 +35,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void add(String username, ProductsAddBindingModel productsAddBindingModel) throws IOException {
-
-        User user = null;
-        if (username != null) {
-            user = userRepository.findByUsername(username);
-        }
+    public void add(ProductsAddBindingModel productsAddBindingModel) throws IOException {
 
         if (productsAddBindingModel != null) {
 //            ModelMapper modelMapper = new ModelMapper();
@@ -55,6 +57,18 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Page<ProductDisplayDTO> getAllProductsByCategory(Long categoryId, Pageable pageable) {
+        Optional<Category> category = categoryRepository.findById(categoryId);
+
+        List<ProductDisplayDTO> productDisplayDTOs = productRepository.findAll()
+                .stream().filter(x -> x.getCategory().getId() == categoryId)
+                .map(this::mapProductToProductDisplayDTO)
+                .toList();
+
+        return new PageImpl<>(productDisplayDTOs);
+    }
+
+    @Override
     public void remove(Long id) {
         productRepository.deleteById(id);
     }
@@ -70,6 +84,7 @@ public class ProductServiceImpl implements ProductService {
         product.setCategory(this.categoryRepository.findById(productsAddBindingModel.getCategoryId()).get());
         product.setCurrency(Currency.getInstance(productsAddBindingModel.getCurrencyCode()));
         product.setDiscount(productsAddBindingModel.getDiscount());
+        product.setDescription(productsAddBindingModel.getDescription());
         product.setPrice(productsAddBindingModel.getPrice());
 
         product.setPhoto(
@@ -77,5 +92,19 @@ public class ProductServiceImpl implements ProductService {
         );
 
         return product;
+    }
+
+    public ProductDisplayDTO mapProductToProductDisplayDTO(Product product) {
+        ProductDisplayDTO productDisplayDTO = new ProductDisplayDTO();
+
+        productDisplayDTO.setName(product.getName());
+        productDisplayDTO.setDescription(product.getDescription());
+        productDisplayDTO.setPhoto("data:image/png;base64," + this.imageEncryptor.DecryptImage(product.getPhoto()));
+        productDisplayDTO.setPrice(product.getPrice());
+        productDisplayDTO.setDiscount(product.getDiscount());
+        productDisplayDTO.setCategoryId(product.getCategory().getId());
+        productDisplayDTO.setCurrencyCode(product.getCurrency().getCurrencyCode());
+
+        return productDisplayDTO;
     }
 }
