@@ -1,5 +1,6 @@
 package com.ngsolutions.SmartMall.controller;
 
+import com.ngsolutions.SmartMall.model.dto.category.CategoryDisplayDTO;
 import com.ngsolutions.SmartMall.model.dto.product.ProductDisplayDTO;
 import com.ngsolutions.SmartMall.service.CategoryService;
 import com.ngsolutions.SmartMall.service.CurrencyService;
@@ -12,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 public class ProductsController {
@@ -34,7 +37,9 @@ public class ProductsController {
                       ) Pageable pageable) {
 
         Page<ProductDisplayDTO> allProductsByCategoryId = productService.getAllProductsByCategory(Long.parseLong(id), pageable);
+        List<CategoryDisplayDTO> allCategories = categoryService.getAll();
 
+        model.addAttribute("categories" ,allCategories);
         model.addAttribute("products", allProductsByCategoryId);
 
         return new ModelAndView("products");

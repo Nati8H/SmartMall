@@ -1,6 +1,7 @@
 package com.ngsolutions.SmartMall.service;
 
 import com.ngsolutions.SmartMall.model.dto.category.CategoriesAddBindingDTO;
+import com.ngsolutions.SmartMall.model.dto.category.CategoryDisplayDTO;
 import com.ngsolutions.SmartMall.model.entity.Category;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -9,7 +10,7 @@ import java.util.List;
 
 public interface CategoryService {
 
-    public List<Category> getAll();
+    List<CategoryDisplayDTO> getAll();
 
     void add(CategoriesAddBindingDTO categoriesAddBindingDTO, UserDetails user) throws IOException;
 }

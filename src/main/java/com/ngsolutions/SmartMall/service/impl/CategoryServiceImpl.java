@@ -1,7 +1,10 @@
 package com.ngsolutions.SmartMall.service.impl;
 
 import com.ngsolutions.SmartMall.model.dto.category.CategoriesAddBindingDTO;
+import com.ngsolutions.SmartMall.model.dto.category.CategoryDisplayDTO;
+import com.ngsolutions.SmartMall.model.dto.product.ProductDisplayDTO;
 import com.ngsolutions.SmartMall.model.entity.Category;
+import com.ngsolutions.SmartMall.model.entity.Product;
 import com.ngsolutions.SmartMall.model.entity.User;
 import com.ngsolutions.SmartMall.repo.CategoryRepository;
 import com.ngsolutions.SmartMall.repo.UserRepository;
@@ -39,8 +42,8 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.save(category);
     }
 
-    public List<Category> getAll(){
-        return this.categoryRepository.findAll();
+    public List<CategoryDisplayDTO> getAll(){
+        return this.categoryRepository.findAll().stream().map(this::mapCategoryToCategoryDisplayDTO).toList();
     }
 
     public Category mapCategoriesAddBindingModelToCategory(CategoriesAddBindingDTO categoriesAddBindingDTO) throws IOException {
@@ -53,5 +56,16 @@ public class CategoryServiceImpl implements CategoryService {
         );
 
         return category;
+    }
+
+    public CategoryDisplayDTO mapCategoryToCategoryDisplayDTO(Category category) {
+        CategoryDisplayDTO categoryDisplayDTO = new CategoryDisplayDTO();
+
+        categoryDisplayDTO.setId(category.getId());
+        categoryDisplayDTO.setName(category.getName());
+        categoryDisplayDTO.setDescription(category.getDescription());
+        categoryDisplayDTO.setPhoto("data:image/png;base64," + this.imageEncryptor.DecryptImage(category.getPhoto()));
+
+        return categoryDisplayDTO;
     }
 }

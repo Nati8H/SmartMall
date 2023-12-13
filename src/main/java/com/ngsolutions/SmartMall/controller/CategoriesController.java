@@ -1,8 +1,12 @@
 package com.ngsolutions.SmartMall.controller;
 
 import com.ngsolutions.SmartMall.model.dto.category.CategoriesAddBindingDTO;
+import com.ngsolutions.SmartMall.model.dto.category.CategoryDisplayDTO;
+import com.ngsolutions.SmartMall.model.dto.product.ProductDisplayDTO;
+import com.ngsolutions.SmartMall.model.entity.Category;
 import com.ngsolutions.SmartMall.service.CategoryService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -14,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 public class CategoriesController {
@@ -45,5 +50,14 @@ public class CategoriesController {
         categoryService.add(categoriesAddBindingDTO, userDetails);
 
         return new ModelAndView("index");
+    }
+
+    @GetMapping("/categories/all")
+    public ModelAndView all(Model model) {
+        List<CategoryDisplayDTO> allCategories = categoryService.getAll();
+
+        model.addAttribute("categories" ,allCategories);
+
+        return new ModelAndView("fragments/sidebar");
     }
 }
