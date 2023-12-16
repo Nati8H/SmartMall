@@ -2278,3 +2278,24 @@ body.shopping-cart {
   background: linear-gradient(to right, #7d97f4, #6c55f9);
   min-height: 100vh;
 }
+
+.add-edit-delete-icons{
+  font-size: 1.5rem;
+  color: #6c55f9;
+}
+
+.product-buttons{
+  display: flex;
+  justify-content: flex-end;
+  width: 85%;
+}
+
+.add-edit-delete-icons:hover{
+  cursor: pointer;
+}
+
+.edit-delete-icons {
+  display: flex;
+  gap: 0.8rem;
+}
+

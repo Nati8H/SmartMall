@@ -38,7 +38,9 @@ public class ProductsController {
 
         Page<ProductDisplayDTO> allProductsByCategoryId = productService.getAllProductsByCategory(Long.parseLong(id), pageable);
         List<CategoryDisplayDTO> allCategories = categoryService.getAll();
+        CategoryDisplayDTO category = categoryService.getById(Long.parseLong(id));
 
+        model.addAttribute("category" ,category);
         model.addAttribute("categories" ,allCategories);
         model.addAttribute("products", allProductsByCategoryId);
 

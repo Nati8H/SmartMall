@@ -4,105 +4,144 @@
 </head>
 <body>
 
-  <!-- Back to top button -->
-  <div class="back-to-top"></div>
+<!-- Back to top button -->
+<div class="back-to-top"></div>
 
-  <header>
+<header>
     <nav th:replace="~{fragments/navbar}"></nav>
 
     <nav th:replace="~{fragments/sidebar}"></nav>
 
     <div class="container mt-5">
-      <div class="page-banner">
-        <div class="row justify-content-center align-items-center h-100">
-          <div class="col-md-6">
-            <nav aria-label="Breadcrumb">
-              <ul class="breadcrumb justify-content-center py-0 bg-transparent">
-                <li class="breadcrumb-item"><a th:href="@{/home}">Home</a></li>
-                <li class="breadcrumb-item active">News</li>
-              </ul>
-            </nav>
-            <h1 class="text-center">Shops</h1>
-          </div>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <main>
-    <div class="page-section">
-      <div class="container">
-        <div class="row">
-          <div th:each="product: ${products.getContent()}"
-          th:object="${product}" >
-          <div class="col-md-6 col-lg-4 py-3">
-            <div class="card-blog">
-              <div class="header">
-                <div class="avatar">
-                  <img th:src="*{photo}" alt="">
+        <div class="page-banner">
+            <div class="row justify-content-center align-items-center h-100">
+                <div class="col-md-6">
+                    <nav aria-label="Breadcrumb">
+                        <ul class="breadcrumb justify-content-center py-0 bg-transparent">
+                            <li class="breadcrumb-item"><a th:href="@{/home}">Home</a></li>
+                            <li class="breadcrumb-item active">Products</li>
+                        </ul>
+                    </nav>
+                    <h1 class="text-center" th:text="${category.getName()}"></h1>
                 </div>
-              </div>
-              <div class="body">
-                <div class="post-title"><a href="blog-single.html" th:text="*{name}">Name</a></div>
-                <div class="post-excerpt" th:text="*{price}">Price</div>
-              </div>
-              <div class="footer">
-                <a th:href="@{/blog-single}">Read More <span class="mai-chevron-forward text-sm"></span></a>
-              </div>
             </div>
-          </div>
-          </div>
+        </div>
+    </div>
+</header>
 
-<!--          <div class="col-12 mt-5">-->
-<!--            <nav aria-label="Page Navigation">-->
-<!--              <ul class="pagination justify-content-center">-->
-<!--                <li class="page-item" th:classappend="${products.isFirst() ? 'disabled' : ''}">-->
-<!--                  <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>-->
-<!--                </li>-->
-<!--                <li class="page-item"><a class="page-link" href="#">1</a></li>-->
-<!--                <li class="page-item active" aria-current="page">-->
-<!--                  <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>-->
-<!--                </li>-->
-<!--                <li class="page-item"><a class="page-link" href="#">3</a></li>-->
-<!--                <li class="page-item">-->
-<!--                  <a class="page-link" href="#">Next</a>-->
-<!--                </li>-->
-<!--              </ul>-->
-<!--            </nav>-->
-<!--          </div>-->
-          <div class="container mt-5">
-            <nav aria-label="Page navigation">
-              <ul class="pagination justify-content-center">
+<main>
+    <div class="page-section">
+        <div class="container">
+            <div class="row">
+                <div th:each="product: ${products.getContent()}"
+                     th:object="${product}">
+                    <div class="col-md-6 col-lg-4 py-3">
+                        <div class="card-blog">
+                            <div class="header">
+                                <div class="avatar">
+                                    <img style="object-fit: cover" th:src="*{photo}" alt="">
+                                </div>
+                            </div>
+                            <div class="body">
+                                <div class="post-title"><a href="blog-single.html" th:text="*{name}">Name</a></div>
+                                <div class="post-excerpt" th:text="*{price}">Price</div>
+                            </div>
+                            <div class="footer product-buttons">
+                                <!--                <i class='bx bx-cart-alt add-edit-delete-icons' ></i>-->
+                                <div class="edit-delete-icons">
+                                    <a th:href="@{/products/edit/{id}(id=${product.getId()})}">
+                                        <i class='bx bx-edit-alt add-edit-delete-icons'></i>
+                                    </a>
+                                    <a href="#deleteModal" data-toggle="modal">
+                                        <i class='bx bx-trash add-edit-delete-icons'></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                <!-- First page logic start -->
-                <li class="page-item" th:classappend="${products.isFirst() ? 'disabled' : ''}">
-                  <a th:if="${products.isFirst()}" class="page-link" href="#" aria-label="Fisrt"><span aria-hidden="true">&laquo;</span></a>
-                  <a th:unless="${products.isFirst()}" class="page-link" th:href="@{/products/all/{id}(size=${products.getSize()})}" aria-label="Fisrt"><span aria-hidden="true">&laquo;</span></a>
-                </li>
-                <!-- EO: First page logic start -->
+                    <div id="deleteModal" class="modal fade">
+                        <div class="modal-dialog modal-confirm">
+                            <div class="modal-content">
+                                <div class="modal-header flex-column">
+                                    <div class="icon-box">
+                                        <i class="material-icons">&#xE5CD;</i>
+                                    </div>
+                                    <h4 class="modal-title w-100">Are you sure?</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                        &times;
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Do you really want to delete this record? This process cannot be undone!</p>
+                                </div>
+                                <div class="modal-footer justify-content-center">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                    <a th:href="@{/products/delete/{id}(id=${product.getId()})}">
+                                        <button type="button" class="btn btn-danger">Delete</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                <!--          <div class="col-12 mt-5">-->
+                <!--            <nav aria-label="Page Navigation">-->
+                <!--              <ul class="pagination justify-content-center">-->
+                <!--                <li class="page-item" th:classappend="${products.isFirst() ? 'disabled' : ''}">-->
+                <!--                  <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>-->
+                <!--                </li>-->
+                <!--                <li class="page-item"><a class="page-link" href="#">1</a></li>-->
+                <!--                <li class="page-item active" aria-current="page">-->
+                <!--                  <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>-->
+                <!--                </li>-->
+                <!--                <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+                <!--                <li class="page-item">-->
+                <!--                  <a class="page-link" href="#">Next</a>-->
+                <!--                </li>-->
+                <!--              </ul>-->
+                <!--            </nav>-->
+                <!--          </div>-->
+                <div class="container mt-5">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
 
-                <!-- Last page logic start -->
-                <li class="page-item" th:classappend="${products.isLast() ? 'disabled' : ''}">
-                  <a th:if="${products.isLast()}" class="page-link" href="#" aria-label="Last"><span aria-hidden="true">&raquo;</span></a>
-                  <a th:unless="${products.isLast()}" class="page-link" th:href="@{/products/all(size=${products.getSize()}, page=${products.getTotalPages() - 1})}" aria-label="Last"><span aria-hidden="true">&raquo;</span></a>
-                </li>
-                <!-- EO: Last page logic start -->
-              </ul>
-            </nav>
-          </div>
+                            <!-- First page logic start -->
+                            <li class="page-item" th:classappend="${products.isFirst() ? 'disabled' : ''}">
+                                <a th:if="${products.isFirst()}" class="page-link" href="#" aria-label="Fisrt"><span
+                                        aria-hidden="true">&laquo;</span></a>
+                                <a th:unless="${products.isFirst()}" class="page-link"
+                                   th:href="@{/products/all/{id}(size=${products.getSize()})}" aria-label="Fisrt"><span
+                                        aria-hidden="true">&laquo;</span></a>
+                            </li>
+                            <!-- EO: First page logic start -->
+
+                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+
+                            <!-- Last page logic start -->
+                            <li class="page-item" th:classappend="${products.isLast() ? 'disabled' : ''}">
+                                <a th:if="${products.isLast()}" class="page-link" href="#" aria-label="Last"><span
+                                        aria-hidden="true">&raquo;</span></a>
+                                <a th:unless="${products.isLast()}" class="page-link"
+                                   th:href="@{/products/all(size=${products.getSize()}, page=${products.getTotalPages() - 1})}"
+                                   aria-label="Last"><span aria-hidden="true">&raquo;</span></a>
+                            </li>
+                            <!-- EO: Last page logic start -->
+                        </ul>
+                    </nav>
+                </div>
+
+            </div>
 
         </div>
-  
-      </div>
     </div>
-  </main>
+</main>
 
-  <footer th:replace="~{fragments/footer}"></footer>
+<footer th:replace="~{fragments/footer}"></footer>
 
-  <div th:replace="~{fragments/scripts}"></div>
+<div th:replace="~{fragments/scripts}"></div>
 
 </body>
 </html>

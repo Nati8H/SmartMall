@@ -6,8 +6,8 @@
             </div>
 
             <div class="nav_list" th:each="category: ${categories}" th:object="${category}">
-                <a th:href="@{/products/all/{id}(id=${category.getId()})}" class="nav_link sidebar-active">
-                    <i class='bx bx-grid-alt nav_icon'></i>
+                <a th:href="@{/products/all/{id}(id=${category.getId()})}" th:id="${category.getHtmlId()}"  class="nav_link">
+                    <img class='nav_icon' th:src="*{photo}" />
                     <span class="nav_name" th:text="*{name}">Name</span>
                 </a>
             </div>

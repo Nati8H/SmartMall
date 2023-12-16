@@ -11,11 +11,15 @@ import java.util.Currency;
 
 public class ProductsAddBindingModel {
 
+    private long id;
+
     private String name;
 
     private String description;
 
     private MultipartFile photo;
+
+    private String displayPhoto;
 
     private double price;
 
@@ -24,6 +28,14 @@ public class ProductsAddBindingModel {
     private Long categoryId;
 
     private String currencyCode;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -47,6 +59,14 @@ public class ProductsAddBindingModel {
 
     public void setPhoto(MultipartFile photo) {
         this.photo = photo;
+    }
+
+    public String getDisplayPhoto() {
+        return displayPhoto;
+    }
+
+    public void setDisplayPhoto(String displayPhoto) {
+        this.displayPhoto = displayPhoto;
     }
 
     public double getPrice() {

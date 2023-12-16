@@ -12,7 +12,7 @@ function showNavbar() {
 // Validate that all variables exist
     if (toggleButton && nav && toggleButtonDiv) {
 // show navbar
-        nav.classList.toggle('show');
+        nav.classList.toggle('show-sidebar');
 // change icon
         toggleButton.classList.toggle('bx-x');
 
@@ -33,13 +33,24 @@ function showNavbar() {
 /*===== LINK ACTIVE =====*/
 const linkColor = document.querySelectorAll('.nav_link')
 
-function colorLink() {
-    if (linkColor) {
-        linkColor.forEach(l => l.classList.remove('sidebar-active'))
-        this.classList.add('sidebar-active')
+// function colorLink() {
+//     if (linkColor) {
+//         linkColor.forEach(l => l.classList.remove('sidebar-active'))
+//         this.classList.add('sidebar-active')
+//     }
+// }
+//
+// linkColor.forEach(l => l.addEventListener('click', colorLink))
+
+// Your code to run since DOM is loaded and ready
+
+function setActiveCategory() {
+    let categoryId = window.location.pathname.split('/').at(-1)
+
+    let element = document.getElementById(`category-${categoryId}`)
+    if (element){
+        element.classList.add('sidebar-active')
     }
 }
 
-linkColor.forEach(l => l.addEventListener('click', colorLink))
-
-// Your code to run since DOM is loaded and ready
+window.addEventListener('load', setActiveCategory)

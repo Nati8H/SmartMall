@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface CategoryService {
 
+    CategoryDisplayDTO getById(long id);
+
     List<CategoryDisplayDTO> getAll();
 
     void add(CategoriesAddBindingDTO categoriesAddBindingDTO, UserDetails user) throws IOException;

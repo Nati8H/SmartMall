@@ -10,6 +10,12 @@ import java.io.IOException;
 public interface ProductService {
     void add(ProductsAddBindingModel wordsAddBindingModel) throws IOException;
 
+    void update(ProductsAddBindingModel productsAddBindingModel) throws IOException;
+
+    void delete(long id);
+
+    ProductsAddBindingModel getProductAddBindingModelById(long id) throws IOException;
+
     Page<ProductDisplayDTO> getAllProductsByCategory(Long categoryId, Pageable pageable);
 
     void remove(Long id);

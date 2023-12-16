@@ -42,6 +42,10 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.save(category);
     }
 
+    public CategoryDisplayDTO getById(long id){
+        return mapCategoryToCategoryDisplayDTO(this.categoryRepository.findById(id).get());
+    }
+
     public List<CategoryDisplayDTO> getAll(){
         return this.categoryRepository.findAll().stream().map(this::mapCategoryToCategoryDisplayDTO).toList();
     }

@@ -6,7 +6,6 @@ import com.ngsolutions.SmartMall.model.entity.Category;
 import com.ngsolutions.SmartMall.model.entity.Product;
 import com.ngsolutions.SmartMall.repo.CategoryRepository;
 import com.ngsolutions.SmartMall.repo.ProductRepository;
-import com.ngsolutions.SmartMall.repo.UserRepository;
 import com.ngsolutions.SmartMall.service.ProductService;
 import com.ngsolutions.SmartMall.utils.ImageEncryptor;
 import org.springframework.data.domain.Page;
@@ -18,19 +17,16 @@ import java.io.IOException;
 import java.util.Currency;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
-    private final UserRepository userRepository;
     private final ImageEncryptor imageEncryptor;
 
-    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository, UserRepository userRepository, ImageEncryptor imageEncryptor) {
+    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository, ImageEncryptor imageEncryptor) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
-        this.userRepository = userRepository;
         this.imageEncryptor = imageEncryptor;
     }
 
@@ -57,6 +53,30 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public void update(ProductsAddBindingModel productsAddBindingModel) throws IOException {
+        if (productsAddBindingModel.getId() > 0){
+            Product product = mapProductsAddBindingModelToProduct(productsAddBindingModel);
+            productRepository.save(product);
+        }
+    }
+
+    @Override
+    public void delete(long id){
+        productRepository.deleteById(id);
+    }
+
+    @Override
+    public ProductsAddBindingModel getProductAddBindingModelById(long id) throws IOException{
+        return productRepository.findById(id).map(x -> {
+            try {
+                return mapProductToProductsAddBindingModel(x);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }).get();
+    }
+
+    @Override
     public Page<ProductDisplayDTO> getAllProductsByCategory(Long categoryId, Pageable pageable) {
         Optional<Category> category = categoryRepository.findById(categoryId);
 
@@ -80,6 +100,7 @@ public class ProductServiceImpl implements ProductService {
 
     public Product mapProductsAddBindingModelToProduct(ProductsAddBindingModel productsAddBindingModel) throws IOException {
         Product product = new Product();
+        product.setId(productsAddBindingModel.getId());
         product.setName(productsAddBindingModel.getName());
         product.setCategory(this.categoryRepository.findById(productsAddBindingModel.getCategoryId()).get());
         product.setCurrency(Currency.getInstance(productsAddBindingModel.getCurrencyCode()));
@@ -97,6 +118,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductDisplayDTO mapProductToProductDisplayDTO(Product product) {
         ProductDisplayDTO productDisplayDTO = new ProductDisplayDTO();
 
+        productDisplayDTO.setId(product.getId());
         productDisplayDTO.setName(product.getName());
         productDisplayDTO.setDescription(product.getDescription());
         productDisplayDTO.setPhoto("data:image/png;base64," + this.imageEncryptor.DecryptImage(product.getPhoto()));
@@ -106,5 +128,21 @@ public class ProductServiceImpl implements ProductService {
         productDisplayDTO.setCurrencyCode(product.getCurrency().getCurrencyCode());
 
         return productDisplayDTO;
+    }
+
+    public ProductsAddBindingModel mapProductToProductsAddBindingModel(Product product) throws IOException {
+        ProductsAddBindingModel productsAddBindingModel = new ProductsAddBindingModel();
+
+        productsAddBindingModel.setId(product.getId());
+        productsAddBindingModel.setName(product.getName());
+        productsAddBindingModel.setDescription(product.getDescription());
+        productsAddBindingModel.setPhoto(this.imageEncryptor.DecryptImageAsMultipartFile(product.getPhoto()));
+        productsAddBindingModel.setDisplayPhoto("data:image/png;base64," + this.imageEncryptor.DecryptImage(product.getPhoto()));
+        productsAddBindingModel.setPrice(product.getPrice());
+        productsAddBindingModel.setDiscount(product.getDiscount());
+        productsAddBindingModel.setCategoryId(product.getCategory().getId());
+        productsAddBindingModel.setCurrencyCode(product.getCurrency().getCurrencyCode());
+
+        return productsAddBindingModel;
     }
 }

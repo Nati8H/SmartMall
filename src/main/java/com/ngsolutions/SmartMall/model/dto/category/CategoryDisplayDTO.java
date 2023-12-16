@@ -18,6 +18,10 @@ public class CategoryDisplayDTO {
         this.id = id;
     }
 
+    public String getHtmlId() {
+        return "category-" + this.id;
+    }
+
     public String getName() {
         return name;
     }
