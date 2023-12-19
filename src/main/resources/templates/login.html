@@ -10,25 +10,31 @@
 
     <div class="login-container" id="login-container">
         <div class="form-container sign-up-container">
-            <form class="login-form" th:action="@{/users/register}"
+            <form class="login-form" id="registrationForm" th:action="@{/users/register}"
                   th:method="POST">
                 <h1 class="login-heading">Create Account</h1>
-                <input class="login-input" type="text" name="username" placeholder="Username" />
-<!--                <p class="errors alert alert-danger">-->
-<!--                    Username is required.-->
-<!--                </p>-->
-                <input class="login-input" type="email" name="email" placeholder="Email" />
-<!--                <p class="errors alert alert-danger">-->
-<!--                    Email is required.-->
-<!--                </p>-->
-                <input class="login-input" type="password" name="password" placeholder="Password" />
-<!--                <p class="errors alert alert-danger">-->
-<!--                    Password is required.-->
-<!--                </p>-->
-                <input class="login-input" type="password" name="confirmPassword" placeholder="Password" />
-<!--                <p class="errors alert alert-danger">-->
-<!--                    Password confirmation is required.-->
-<!--                </p>-->
+                <input class="login-input" type="text" id="username" name="username" placeholder="Username" />
+                <p class="text-danger" id="username-error" style="display: none">
+                    Username is required.
+                </p>
+                <input class="login-input" type="email" id="email" name="email" placeholder="Email" />
+                <p class="text-danger" id="email-error" style="display: none">
+                    Valid email is required.
+                </p>
+                <input class="login-input" type="password" id="password" name="password" placeholder="Password" />
+                <p id="password-error" class="text-danger" style="display: none">
+                    Password is required.
+                </p>
+                <input class="login-input" type="password" id="confirmPassword" name="confirmPassword" placeholder="Password" />
+                <p id="confirmPassword-error" class="text-danger" style="display: none">
+                    Password confirmation is required.
+                </p>
+                <p id="password-match-error" class="text-danger" style="display: none">
+                    Passwords must match.
+                </p>
+                <p id="password-length-error" class="text-danger" style="display: none;">
+                    Password must be more than 6 symbols.
+                </p>
                 <button class="login-button" type="submit">Sign Up</button>
             </form>
         </div>
@@ -36,14 +42,14 @@
             <form class="login-form" th:method="POST"
                   th:action="@{/users/login}">
                 <h1 class="login-heading">Sign in</h1>
-                <input class="login-input" type="email" name="email" placeholder="Email" />
-                <input class="login-input" type="password" name="password" placeholder="Password" />
+                <input class="login-input" type="email" name="email" placeholder="Email"/>
+                <input class="login-input" type="password" name="password" placeholder="Password"/>
                 <div class="form-group">
                     <label for="rememberme" class="text-white font-weight-bold">Remember me</label>
-                    <input  id="rememberme"
-                            name="rememberme"
-                            type="checkbox"
-                            class="form-control"/>
+                    <input id="rememberme"
+                           name="rememberme"
+                           type="checkbox"
+                           class="form-control"/>
 
                 </div>
                 <p th:if="${bad_credentials}" class="errors alert alert-danger">
@@ -68,8 +74,8 @@
         </div>
     </div>
 </section>
-    <footer th:replace="~{fragments/footer}"></footer>
+<footer th:replace="~{fragments/footer}"></footer>
 
-    <div th:replace="~{fragments/scripts}"></div>
+<div th:replace="~{fragments/scripts}"></div>
 </body>
 </html>

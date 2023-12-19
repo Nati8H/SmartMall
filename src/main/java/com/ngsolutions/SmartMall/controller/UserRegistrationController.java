@@ -27,7 +27,7 @@ public class UserRegistrationController {
 
         userService.registerUser(userRegistrationDTO);
 
-        return new ModelAndView("edit-profile");
+        return new ModelAndView("profile-settings");
     }
 
 

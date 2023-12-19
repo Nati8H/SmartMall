@@ -1,5 +1,7 @@
 package com.ngsolutions.SmartMall.controller;
 
+import com.ngsolutions.SmartMall.model.dto.user.UserRegistrationSecDTO;
+import com.ngsolutions.SmartMall.model.entity.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
