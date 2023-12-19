@@ -38,6 +38,7 @@ public class SecurityConfiguration {
                         // Allow anyone to see the home page, the registration page and the login form
                         .requestMatchers("/", "/users/login", "/users/register", "/users/login-error").permitAll()
                         .requestMatchers("/categories/add").permitAll()
+                        .requestMatchers("/categories/edit/**").permitAll()
                         .requestMatchers("/products/add").permitAll()
                         .requestMatchers("/products/all").permitAll()
                         .requestMatchers("products/all/{id}").permitAll()

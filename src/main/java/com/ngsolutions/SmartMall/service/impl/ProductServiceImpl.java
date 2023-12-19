@@ -56,6 +56,9 @@ public class ProductServiceImpl implements ProductService {
     public void update(ProductsAddBindingModel productsAddBindingModel) throws IOException {
         if (productsAddBindingModel.getId() > 0){
             Product product = mapProductsAddBindingModelToProduct(productsAddBindingModel);
+            if (product.getPhoto() == null){
+                product.setPhoto(this.productRepository.findById(productsAddBindingModel.getId()).get().getPhoto());
+            }
             productRepository.save(product);
         }
     }
@@ -89,12 +92,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void remove(Long id) {
-        productRepository.deleteById(id);
-    }
-
-    @Override
-    public void removeAll() {
+    public void deleteAll() {
         productRepository.deleteAll();
     }
 
@@ -108,9 +106,7 @@ public class ProductServiceImpl implements ProductService {
         product.setDescription(productsAddBindingModel.getDescription());
         product.setPrice(productsAddBindingModel.getPrice());
 
-        product.setPhoto(
-                this.imageEncryptor.EncryptImage(productsAddBindingModel.getPhoto())
-        );
+        product.setPhoto(productsAddBindingModel.getPhoto().isEmpty() ? null : this.imageEncryptor.EncryptImage(productsAddBindingModel.getPhoto()));
 
         return product;
     }

@@ -1,10 +1,8 @@
 package com.ngsolutions.SmartMall.service.impl;
 
-import com.ngsolutions.SmartMall.model.dto.category.CategoriesAddBindingDTO;
+import com.ngsolutions.SmartMall.model.dto.category.CategoriesAddDTO;
 import com.ngsolutions.SmartMall.model.dto.category.CategoryDisplayDTO;
-import com.ngsolutions.SmartMall.model.dto.product.ProductDisplayDTO;
 import com.ngsolutions.SmartMall.model.entity.Category;
-import com.ngsolutions.SmartMall.model.entity.Product;
 import com.ngsolutions.SmartMall.model.entity.User;
 import com.ngsolutions.SmartMall.repo.CategoryRepository;
 import com.ngsolutions.SmartMall.repo.UserRepository;
@@ -30,9 +28,9 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void add(CategoriesAddBindingDTO categoriesAddBindingDTO, UserDetails user) throws IOException {
+    public void add(CategoriesAddDTO categoriesAddDTO, UserDetails user) throws IOException {
 
-        Category category = mapCategoriesAddBindingModelToCategory(categoriesAddBindingDTO);
+        Category category = mapCategoriesAddDTOToCategory(categoriesAddDTO);
         User userEntity = userRepository.findByEmail(user.getUsername()).orElseThrow(() ->
                 new IllegalArgumentException("User with email " + user.getUsername() + " not found!"));
 
@@ -41,24 +39,64 @@ public class CategoryServiceImpl implements CategoryService {
         categoryRepository.save(category);
     }
 
+    @Override
+    public void update(CategoriesAddDTO categoriesAddDTO, UserDetails user) throws IOException {
+
+        Category category = mapCategoriesAddDTOToCategory(categoriesAddDTO);
+        User userEntity = userRepository.findByEmail(user.getUsername()).orElseThrow(() ->
+                new IllegalArgumentException("User with email " + user.getUsername() + " not found!"));
+
+        category.setUser(userEntity);
+
+        categoryRepository.save(category);
+    }
+
+    @Override
+    public void delete(long id){
+        categoryRepository.deleteById(id);
+    }
+
+    @Override
     public CategoryDisplayDTO getById(long id){
         return mapCategoryToCategoryDisplayDTO(this.categoryRepository.findById(id).get());
     }
 
+    @Override
+    public CategoryDisplayDTO getFirstAvailableCategory(){
+        return mapCategoryToCategoryDisplayDTO(this.categoryRepository.findAll().get(0));
+    }
+
+    @Override
+    public CategoriesAddDTO getCategoriesAddDTOById(long id){
+        return mapCategoryToCategoriesAddDTO(this.categoryRepository.findById(id).get());
+    }
+
+    @Override
     public List<CategoryDisplayDTO> getAll(){
         return this.categoryRepository.findAll().stream().map(this::mapCategoryToCategoryDisplayDTO).toList();
     }
 
-    public Category mapCategoriesAddBindingModelToCategory(CategoriesAddBindingDTO categoriesAddBindingDTO) throws IOException {
+    public Category mapCategoriesAddDTOToCategory(CategoriesAddDTO categoriesAddDTO) throws IOException {
         Category category = new Category();
-        category.setName(categoriesAddBindingDTO.getName());
-        category.setDescription(categoriesAddBindingDTO.getDescription());
+        category.setName(categoriesAddDTO.getName());
+        category.setDescription(categoriesAddDTO.getDescription());
 
         category.setPhoto(
-                this.imageEncryptor.EncryptImage(categoriesAddBindingDTO.getPhoto())
+                this.imageEncryptor.EncryptImage(categoriesAddDTO.getPhoto())
         );
 
         return category;
+    }
+
+    public CategoriesAddDTO mapCategoryToCategoriesAddDTO(Category category) {
+        CategoriesAddDTO categoriesAddDTO = new CategoriesAddDTO();
+
+        categoriesAddDTO.setId(category.getId());
+        categoriesAddDTO.setName(category.getName());
+        categoriesAddDTO.setDescription(category.getDescription());
+        categoriesAddDTO.setDisplayPhoto("data:image/png;base64," + this.imageEncryptor.DecryptImage(category.getPhoto()));
+
+        return categoriesAddDTO;
     }
 
     public CategoryDisplayDTO mapCategoryToCategoryDisplayDTO(Category category) {

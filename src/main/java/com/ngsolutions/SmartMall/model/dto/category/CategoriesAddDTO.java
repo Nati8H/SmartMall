@@ -1,15 +1,26 @@
 package com.ngsolutions.SmartMall.model.dto.category;
 
-import com.ngsolutions.SmartMall.model.dto.product.ProductsAddBindingModel;
 import org.springframework.web.multipart.MultipartFile;
 
-public class CategoriesAddBindingDTO {
+public class CategoriesAddDTO {
+
+    private long id;
 
     private String name;
 
     private String description;
 
     private MultipartFile photo;
+
+    private String displayPhoto;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -35,7 +46,15 @@ public class CategoriesAddBindingDTO {
         this.photo = photo;
     }
 
-    public static CategoriesAddBindingDTO empty() {
-        return new CategoriesAddBindingDTO();
+    public String getDisplayPhoto() {
+        return displayPhoto;
+    }
+
+    public void setDisplayPhoto(String displayPhoto) {
+        this.displayPhoto = displayPhoto;
+    }
+
+    public static CategoriesAddDTO empty() {
+        return new CategoriesAddDTO();
     }
 }
