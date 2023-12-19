@@ -34,10 +34,14 @@
                     up</a>
             </div>
 
-            <div sec:authorize="isAuthenticated()" class="ml-auto">
-                <div class="logged-user">
-                    Welcome, <th:block sec:authentication="name"></th:block>!
-                </div>
+            <div sec:authorize="isAuthenticated()" style="display: flex; gap: 15px;" class="ml-auto">
+                <a th:href="@{/users/edit/settings}">
+                    <div class="logged-user" style="padding-top: 10px;">
+                        Welcome,
+                        <th:block sec:authentication="name"></th:block>
+                        !
+                    </div>
+                </a>
                 <form th:method="post"
                       th:action="@{/users/logout}">
                     <input type="submit" class="btn btn-outline rounded-pill" value="Logout"/>

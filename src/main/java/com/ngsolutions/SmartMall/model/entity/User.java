@@ -78,48 +78,54 @@ public class User extends BaseEntity {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    public User setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+        return this;
     }
 
     public String getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    public User setAddress(String address) {
         this.address = address;
+        return this;
     }
 
     public List<Category> getCategories() {
         return categories;
     }
 
-    public void setCategories(List<Category> categories) {
+    public User setCategories(List<Category> categories) {
         this.categories = categories;
+        return this;
     }
 
     public String getShopName() {
         return shopName;
     }
 
-    public void setShopName(String shopName) {
+    public User setShopName(String shopName) {
         this.shopName = shopName;
+        return this;
     }
 
     public byte[] getShopPhoto() {
         return shopPhoto;
     }
 
-    public void setShopPhoto(byte[] shopPhoto) {
+    public User setShopPhoto(byte[] shopPhoto) {
         this.shopPhoto = shopPhoto;
+        return this;
     }
 
     public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public User setRoles(List<Role> roles) {
         this.roles = roles;
+        return this;
     }
 
     public boolean isActive() {

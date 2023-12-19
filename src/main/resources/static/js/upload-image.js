@@ -5,6 +5,7 @@ const imageView = document.getElementById("img-view");
 uploadedImage.addEventListener("change", uploadImage);
 
 function uploadImage(){
+    debugger;
     let imgLink = URL.createObjectURL(uploadedImage.files[0]);
     imageView.style.backgroundImage = `url(${imgLink})`;
     imageView.textContent = "";
@@ -41,9 +42,9 @@ function uploadDisplayImage(){
 }
 
 function loadImage() {
-    let operation = window.location.pathname.split('/').at(-2)
+    let operation = window.location.pathname.split('/')
 
-    if (operation === "edit"){
+    if (operation.at(-2) === "edit" || operation.at(-1) === "edit"){
         uploadDisplayImage()
     }
 }

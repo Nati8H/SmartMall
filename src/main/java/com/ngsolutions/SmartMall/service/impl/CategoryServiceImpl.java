@@ -36,7 +36,6 @@ public class CategoryServiceImpl implements CategoryService {
         User userEntity = userRepository.findByEmail(user.getUsername()).orElseThrow(() ->
                 new IllegalArgumentException("User with email " + user.getUsername() + " not found!"));
 
-
         category.setUser(userEntity);
 
         categoryRepository.save(category);
