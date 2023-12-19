@@ -1,10 +1,14 @@
 package com.ngsolutions.SmartMall.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ngsolutions.SmartMall.model.dto.user.UserDTOFromJson;
 import com.ngsolutions.SmartMall.model.dto.user.UserEditDTO;
 import com.ngsolutions.SmartMall.model.dto.user.UserEditRolesDTO;
 import com.ngsolutions.SmartMall.model.dto.user.UserRegistrationDTO;
+import com.ngsolutions.SmartMall.model.entity.Role;
 import com.ngsolutions.SmartMall.model.entity.User;
 import com.ngsolutions.SmartMall.model.event.UserRegisteredEvent;
+import com.ngsolutions.SmartMall.repo.RoleRepository;
 import com.ngsolutions.SmartMall.repo.UserRepository;
 import com.ngsolutions.SmartMall.service.UserService;
 import com.ngsolutions.SmartMall.utils.ImageEncryptor;
@@ -18,11 +22,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
     private final ApplicationEventPublisher appEventPublisher;
@@ -31,10 +37,11 @@ public class UserServiceImpl implements UserService {
 
     public UserServiceImpl(
             UserRepository userRepository,
-            PasswordEncoder passwordEncoder,
+            RoleRepository roleRepository, PasswordEncoder passwordEncoder,
             ApplicationEventPublisher appEventPublisher,
             UserDetailsService userDetailsService, ImageEncryptor imageEncryptor) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
         this.appEventPublisher = appEventPublisher;
         this.smartMallUserDetailsService = userDetailsService;
@@ -70,6 +77,27 @@ public class UserServiceImpl implements UserService {
         for (UserEditRolesDTO userEdit : usersEdit) {
             User user = userRepository.findById(userEdit.getId()).get();
             user.setRoles(userEdit.getRoles());
+            userRepository.save(user);
+        }
+    }
+
+    @Override
+    public void updateUserRoles(String json) {
+        UserDTOFromJson[] data = null;
+
+        try {
+            data = new ObjectMapper().readValue(json, UserDTOFromJson[].class);
+        } catch (Exception e) {
+        }
+
+        for (UserDTOFromJson userEdit : data) {
+            User user = userRepository.findById(Long.parseLong(userEdit.id)).get();
+            List<Role> roles = new ArrayList<>();
+            for (String roleId :
+                    userEdit.roles) {
+                roles.add(this.roleRepository.findById(Long.parseLong(roleId)).get());
+            }
+            user.setRoles(roles);
             userRepository.save(user);
         }
     }

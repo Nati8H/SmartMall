@@ -16,6 +16,8 @@ public interface UserService {
 
     void updateUsersRoles(List<UserEditRolesDTO> usersEdit);
 
+    void updateUserRoles(String json);
+
     UserEditDTO getUserEditDTOByEmail(String email) throws IOException;
 
     List<UserEditRolesDTO> getUserEditRolesDTOs();

@@ -41,12 +41,13 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void update(CategoriesAddDTO categoriesAddDTO, UserDetails user) throws IOException {
-
+        Category oldCategory = this.categoryRepository.findById(categoriesAddDTO.getId()).get();
         Category category = mapCategoriesAddDTOToCategory(categoriesAddDTO);
-        User userEntity = userRepository.findByEmail(user.getUsername()).orElseThrow(() ->
-                new IllegalArgumentException("User with email " + user.getUsername() + " not found!"));
+        category.setUser(oldCategory.getUser());
 
-        category.setUser(userEntity);
+        if (category.getPhoto() == null){
+            category.setPhoto(oldCategory.getPhoto());
+        }
 
         categoryRepository.save(category);
     }
@@ -78,12 +79,12 @@ public class CategoryServiceImpl implements CategoryService {
 
     public Category mapCategoriesAddDTOToCategory(CategoriesAddDTO categoriesAddDTO) throws IOException {
         Category category = new Category();
+        category.setId(categoriesAddDTO.getId());
         category.setName(categoriesAddDTO.getName());
         category.setDescription(categoriesAddDTO.getDescription());
 
-        category.setPhoto(
-                this.imageEncryptor.EncryptImage(categoriesAddDTO.getPhoto())
-        );
+        category.setPhoto(categoriesAddDTO.getPhoto().isEmpty() ? null : this.imageEncryptor.EncryptImage(categoriesAddDTO.getPhoto()));
+
 
         return category;
     }

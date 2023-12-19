@@ -29,6 +29,7 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity, OAuthSuccessHandler oAuthSuccessHandler) throws Exception {
+        httpSecurity.csrf().disable();
         return httpSecurity.authorizeHttpRequests(
                 // Define which urls are visible by which users
                 authorizeRequests -> authorizeRequests
@@ -40,6 +41,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/categories/add").permitAll()
                         .requestMatchers("/categories/edit/**").permitAll()
                         .requestMatchers("/products/add").permitAll()
+                        .requestMatchers("/users/manage-roles").permitAll()
                         .requestMatchers("/products/all").permitAll()
                         .requestMatchers("products/all/{id}").permitAll()
                         .requestMatchers(HttpMethod.GET, "/product/**").permitAll()

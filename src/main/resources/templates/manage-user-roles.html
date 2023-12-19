@@ -38,18 +38,20 @@
                                                   enctype="multipart/form-data"
                                                   th:method="POST"
                                                   th:object="${usersHolder}"
-                                                  th:action="@{/users/manage-roles}">
+                                                  th:action="@{/users/manage-roles}"
+                                                  id="roles-form">
                                                 <div class="row" th:each="user : ${usersHolder.users}">
                                                     <div class="col">
                                                         <div class="form-group">
                                                             <label>Username</label>
                                                             <p class="form-control" th:text="${user.getUsername()}"></p>
+                                                            <input hidden name="id" class="user-id" th:value="${user.id}">
                                                         </div>
                                                     </div>
                                                     <div class="col">
                                                         <div class="form-group">
                                                             <label>Roles</label>
-                                                            <select name="roles" class="form-control" th:field="*{user.roles}" multiple>
+                                                            <select name="roles" class="form-control role-select"  th:id="${user.id}" multiple>
                                                                 <option
                                                                         th:each="role : ${allRoles}"
                                                                         th:text="${role.roleName}"

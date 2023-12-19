@@ -8,9 +8,7 @@ import com.ngsolutions.SmartMall.repo.CategoryRepository;
 import com.ngsolutions.SmartMall.repo.ProductRepository;
 import com.ngsolutions.SmartMall.service.ProductService;
 import com.ngsolutions.SmartMall.utils.ImageEncryptor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -88,7 +86,7 @@ public class ProductServiceImpl implements ProductService {
                 .map(this::mapProductToProductDisplayDTO)
                 .toList();
 
-        return new PageImpl<>(productDisplayDTOs);
+        return new PageImpl<>(productDisplayDTOs, PageRequest.ofSize(6), productDisplayDTOs.size());
     }
 
     @Override

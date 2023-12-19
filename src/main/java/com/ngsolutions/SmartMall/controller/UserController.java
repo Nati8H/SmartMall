@@ -75,11 +75,4 @@ public class UserController {
 
         return new ModelAndView("manage-user-roles");
     }
-
-    @PostMapping("/users/manage-roles")
-    public String manageUserRoles(@ModelAttribute("usersHolder") UserEditRolesDTOHolder usersHolder) {
-        this.userService.updateUsersRoles(usersHolder.getUsers());
-
-        return ("redirect:/users/manage-roles");
-    }
 }
