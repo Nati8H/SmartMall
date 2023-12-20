@@ -104,12 +104,16 @@ public class ProductServiceImpl implements ProductService {
         product.setId(productsAddBindingModel.getId());
         product.setName(productsAddBindingModel.getName());
         product.setCategory(this.categoryRepository.findById(productsAddBindingModel.getCategoryId()).get());
-        product.setCurrency(Currency.getInstance(productsAddBindingModel.getCurrencyCode()));
+        if (productsAddBindingModel.getCurrencyCode() != null) {
+            product.setCurrency(Currency.getInstance(productsAddBindingModel.getCurrencyCode()));
+        }
         product.setDiscount(productsAddBindingModel.getDiscount());
         product.setDescription(productsAddBindingModel.getDescription());
         product.setPrice(productsAddBindingModel.getPrice());
 
-        product.setPhoto(productsAddBindingModel.getPhoto().isEmpty() ? null : this.imageEncryptor.EncryptImage(productsAddBindingModel.getPhoto()));
+        if (productsAddBindingModel.getPhoto() != null) {
+            product.setPhoto(productsAddBindingModel.getPhoto().isEmpty() ? null : this.imageEncryptor.EncryptImage(productsAddBindingModel.getPhoto()));
+        }
 
         return product;
     }
@@ -124,9 +128,13 @@ public class ProductServiceImpl implements ProductService {
         productDisplayDTO.setPhoto("data:image/png;base64," + this.imageEncryptor.DecryptImage(product.getPhoto()));
         productDisplayDTO.setPrice(product.getPrice());
         productDisplayDTO.setDiscount(product.getDiscount());
-        productDisplayDTO.setCategoryId(product.getCategory().getId());
-        productDisplayDTO.setCategoryName(product.getCategory().getName());
-        productDisplayDTO.setCurrencyCode(product.getCurrency().getCurrencyCode());
+        if (product.getCategory() != null) {
+            productDisplayDTO.setCategoryId(product.getCategory().getId());
+            productDisplayDTO.setCategoryName(product.getCategory().getName());
+        }
+        if (product.getCurrency() != null) {
+            productDisplayDTO.setCurrencyCode(product.getCurrency().getCurrencyCode());
+        }
 
         return productDisplayDTO;
     }
@@ -141,8 +149,12 @@ public class ProductServiceImpl implements ProductService {
         productsAddBindingModel.setDisplayPhoto("data:image/png;base64," + this.imageEncryptor.DecryptImage(product.getPhoto()));
         productsAddBindingModel.setPrice(product.getPrice());
         productsAddBindingModel.setDiscount(product.getDiscount());
-        productsAddBindingModel.setCategoryId(product.getCategory().getId());
-        productsAddBindingModel.setCurrencyCode(product.getCurrency().getCurrencyCode());
+        if (product.getCategory() != null) {
+            productsAddBindingModel.setCategoryId(product.getCategory().getId());
+        }
+        if (product.getCurrency() != null) {
+            productsAddBindingModel.setCurrencyCode(product.getCurrency().getCurrencyCode());
+        }
 
         return productsAddBindingModel;
     }

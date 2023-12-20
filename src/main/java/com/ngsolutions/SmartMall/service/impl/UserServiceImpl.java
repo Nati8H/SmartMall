@@ -149,7 +149,7 @@ public class UserServiceImpl implements UserService {
                 .setUsername(userEditDTO.getUsername())
                 .setEmail(userEditDTO.getEmail())
                 .setPassword(userEditDTO.getNewPassword().trim().isEmpty() ? userEditDTO.getPassword() : passwordEncoder.encode(userEditDTO.getNewPassword()))
-                .setShopPhoto(userEditDTO.getShopPhoto().isEmpty() ? null : this.imageEncryptor.EncryptImage(userEditDTO.getShopPhoto()))
+                .setShopPhoto(userEditDTO.getShopPhoto() == null ? null : userEditDTO.getShopPhoto().isEmpty() ? null : this.imageEncryptor.EncryptImage(userEditDTO.getShopPhoto()))
                 .setRoles(userEditDTO.getRoles())
                 .setAddress(userEditDTO.getAddress())
                 .setPhoneNumber(userEditDTO.getPhoneNumber())
@@ -162,7 +162,7 @@ public class UserServiceImpl implements UserService {
     private UserEditDTO mapUserToUserEditDTO(User user) throws IOException {
         UserEditDTO userEditDTO = new UserEditDTO();
 
-        userEditDTO.setId(user.getId());
+        userEditDTO.setId(user.getId() == null ? 0 : user.getId());
         userEditDTO.setActive(userEditDTO.isActive());
         userEditDTO.setUsername(user.getUsername());
         userEditDTO.setEmail(user.getEmail());
