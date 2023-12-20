@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/head}">
 </head>
 <body>
@@ -47,10 +48,10 @@
                                 <div class="post-excerpt" th:text="*{price}">Price</div>
                             </div>
                             <div class="footer product-buttons">
-                                <a th:href="@{/products/add-to-shopping-cart/{id}(id=${product.getId()})}">
+                                <a sec:authorize="hasRole('USER')" th:href="@{/products/add-to-shopping-cart/{id}(id=${product.getId()})}">
                                     <i class='bx bx-cart-alt add-edit-delete-icons'></i>
                                 </a>
-                                <div class="edit-delete-icons">
+                                <div class="edit-delete-icons" sec:authorize="hasAnyRole('ADMIN', 'SHOP_OWNER')">
                                     <a th:href="@{/products/edit/{id}(id=${product.getId()})}">
                                         <i class='bx bx-edit-alt add-edit-delete-icons'></i>
                                     </a>

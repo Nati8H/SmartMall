@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{fragments/head}">
 </head>
 
@@ -15,7 +16,7 @@
                 <div class="card p-3" style="width: 175px;">
                     <div class="e-navlist e-navlist--active-bg">
                         <ul class="nav">
-                            <li class="nav-item"><a class="nav-link px-2 active" th:href="@{/users/manage-roles}"><i
+                            <li class="nav-item"><a sec:authorize="hasRole('ADMIN')" class="nav-link px-2 active" th:href="@{/users/manage-roles}"><i
                                     class="fa-solid fa-address-book  mr-1"></i><span>Manage Roles</span></a></li>
                             <li class="nav-item"><a class="nav-link px-2"
                                                     th:href="@{/users/edit/settings}"

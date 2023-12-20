@@ -1,4 +1,5 @@
-<html lang="en" xmlns:sec="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security" >
 <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-light navbar-float">
     <div class="container">
         <a th:href="@{/home}" class="navbar-brand" id="smart">Smart<span class="text-primary" id="mall">Mall</span></a>
@@ -14,16 +15,13 @@
                     <a th:href="@{/home}" class="nav-link">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a th:href="@{/about}" class="nav-link">About</a>
-                </li>
-                <li class="nav-item">
-                    <a th:href="@{/services}" class="nav-link">Services</a>
-                </li>
-                <li class="nav-item">
                     <a th:href="@{/products/all/{id}(id=${1})}" class="nav-link">Products</a>
                 </li>
-                <li class="nav-item">
-                    <a th:href="@{/contact}" class="nav-link">Contact</a>
+                <li sec:authorize="hasAnyRole('ADMIN', 'SHOP_OWNER')" class="nav-item">
+                    <a th:href="@{/products/add}" class="nav-link">Add Product</a>
+                </li>
+                <li sec:authorize="hasAnyRole('ADMIN', 'SHOP_OWNER')" class="nav-item">
+                    <a th:href="@{/categories/add}" class="nav-link">Add Category</a>
                 </li>
             </ul>
 
@@ -46,7 +44,7 @@
                       th:action="@{/users/logout}">
                     <input type="submit" class="btn btn-outline rounded-pill" value="Logout"/>
                 </form>
-                <a th:href="@{/shopping-cart/open}">
+                <a sec:authorize="hasRole('USER')" th:href="@{/shopping-cart/open}">
                     <i class='bx bx-cart-alt add-edit-delete-icons' style="font-size: 38px; margin-top: 3px;"></i>
                 </a>
             </div>

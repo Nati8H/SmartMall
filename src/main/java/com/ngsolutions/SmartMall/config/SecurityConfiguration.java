@@ -1,5 +1,6 @@
 package com.ngsolutions.SmartMall.config;
 
+import com.ngsolutions.SmartMall.model.enums.RoleEnum;
 import com.ngsolutions.SmartMall.repo.UserRepository;
 import com.ngsolutions.SmartMall.service.impl.SmartMallUserDetailsService;
 import com.ngsolutions.SmartMall.service.oauth.OAuthSuccessHandler;
@@ -38,14 +39,16 @@ public class SecurityConfiguration {
                         .requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
                         // Allow anyone to see the home page, the registration page and the login form
                         .requestMatchers("/", "/users/login", "/users/register", "/users/login-error").permitAll()
-                        .requestMatchers("/categories/add").permitAll()
-                        .requestMatchers("/categories/edit/**").permitAll()
-                        .requestMatchers("/products/add").permitAll()
-                        .requestMatchers("/users/manage-roles").permitAll()
+                        .requestMatchers("/categories/add").hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.SHOP_OWNER.name())
+                        .requestMatchers("/categories/edit/**").hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.SHOP_OWNER.name())
+                        .requestMatchers("/products/add").hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.SHOP_OWNER.name())
+                        .requestMatchers("/users/edit/settings").hasAnyRole(RoleEnum.ADMIN.name(), RoleEnum.SHOP_OWNER.name(), RoleEnum.USER.name())
                         .requestMatchers("/products/all").permitAll()
                         .requestMatchers("products/all/{id}").permitAll()
                         .requestMatchers(HttpMethod.GET, "/product/**").permitAll()
-                        .requestMatchers("/home", "/about", "/services", "/blog", "/contact", "/blog-single", "/edit-profile").permitAll()
+                        .requestMatchers("/users/manage-roles").hasRole(RoleEnum.ADMIN.name())
+                        .requestMatchers("//shopping-cart/open").hasRole(RoleEnum.USER.name())
+                        .requestMatchers("/home", "/about", "/services", "/blog", "/contact", "/blog-single").permitAll()
                         // .requestMatchers("/products").hasRole(RoleEnum.ADMIN.name())
                         // all other requests are authenticated.
                         .anyRequest().authenticated()
