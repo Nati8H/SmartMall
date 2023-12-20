@@ -11,9 +11,14 @@ import com.ngsolutions.SmartMall.repo.UserRepository;
 import com.ngsolutions.SmartMall.service.OrderService;
 import com.ngsolutions.SmartMall.service.ProductService;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +30,8 @@ public class OrderServiceImpl implements OrderService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final ProductService productService;
+
+    static final Logger LOGGER = LoggerFactory.getLogger(OrderServiceImpl.class.getName());
 
     public OrderServiceImpl(OrderRepository orderRepository, UserRepository userRepository, ProductRepository productRepository, ProductService productService) {
         this.orderRepository = orderRepository;
@@ -180,6 +187,16 @@ public class OrderServiceImpl implements OrderService {
             return String.format("%09d", Long.parseLong(String.valueOf((orders.get(orders.size() - 1).getId() + 1))));
         }
         return "0000000001";
+    }
+
+    @Scheduled(fixedDelay = 86400000)
+    public void deleteLeftShoppingCart() throws InterruptedException {
+        LOGGER.info("Deleted shopping cart at "+
+                LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
+
+        List<Order> orders = this.orderRepository.findAll().stream().filter(x -> !x.isFinalized()).toList();
+
+        this.orderRepository.deleteAll(orders);
     }
 
 }
