@@ -1,35 +1,36 @@
-package com.ngsolutions.SmartMall.model.entity;
+package com.ngsolutions.SmartMall.model.dto.order;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import com.ngsolutions.SmartMall.model.entity.Product;
+import com.ngsolutions.SmartMall.model.entity.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "orders")
-public class Order extends BaseEntity{
+public class OrderDTO {
 
-    @Column
-    @NotNull
+    private long id;
+
     private String orderNumber;
 
-    @Column
     private double discount;
 
-    @Column
     private double price;
 
-    @Column
     private double finalPrice;
 
-    @ManyToOne
     private User user;
 
-    @OneToMany
     private List<Product> products = new ArrayList<>();
 
     private boolean isFinalized;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getOrderNumber() {
         return orderNumber;

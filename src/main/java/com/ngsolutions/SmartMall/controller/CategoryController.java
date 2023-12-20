@@ -78,7 +78,7 @@ public class CategoryController {
         return ("redirect:/products/all/" + categoriesAddDTO.getId());
     }
 
-    @GetMapping("/categories/delete/{id}")
+    @PostMapping("/categories/delete/{id}")
     public String deleteCategory(@PathVariable String id) throws IOException {
 
         categoryService.delete(Long.parseLong(id));

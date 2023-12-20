@@ -47,7 +47,9 @@
                                 <div class="post-excerpt" th:text="*{price}">Price</div>
                             </div>
                             <div class="footer product-buttons">
-                                <!--                <i class='bx bx-cart-alt add-edit-delete-icons' ></i>-->
+                                <a th:href="@{/products/add-to-shopping-cart/{id}(id=${product.getId()})}">
+                                    <i class='bx bx-cart-alt add-edit-delete-icons'></i>
+                                </a>
                                 <div class="edit-delete-icons">
                                     <a th:href="@{/products/edit/{id}(id=${product.getId()})}">
                                         <i class='bx bx-edit-alt add-edit-delete-icons'></i>

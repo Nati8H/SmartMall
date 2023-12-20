@@ -2286,7 +2286,7 @@ body.shopping-cart {
 
 .product-buttons{
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   width: 85%;
 }
 

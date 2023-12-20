@@ -78,6 +78,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public ProductDisplayDTO getProductDisplayDTOById(long id){
+        return productRepository.findById(id).map(this::mapProductToProductDisplayDTO).get();
+    }
+
+    @Override
     public Page<ProductDisplayDTO> getAllProductsByCategory(Long categoryId, Pageable pageable) {
         Optional<Category> category = categoryRepository.findById(categoryId);
 
@@ -109,6 +114,7 @@ public class ProductServiceImpl implements ProductService {
         return product;
     }
 
+    @Override
     public ProductDisplayDTO mapProductToProductDisplayDTO(Product product) {
         ProductDisplayDTO productDisplayDTO = new ProductDisplayDTO();
 
@@ -119,6 +125,7 @@ public class ProductServiceImpl implements ProductService {
         productDisplayDTO.setPrice(product.getPrice());
         productDisplayDTO.setDiscount(product.getDiscount());
         productDisplayDTO.setCategoryId(product.getCategory().getId());
+        productDisplayDTO.setCategoryName(product.getCategory().getName());
         productDisplayDTO.setCurrencyCode(product.getCurrency().getCurrencyCode());
 
         return productDisplayDTO;

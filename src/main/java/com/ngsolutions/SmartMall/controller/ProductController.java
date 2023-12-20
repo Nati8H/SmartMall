@@ -1,11 +1,15 @@
 package com.ngsolutions.SmartMall.controller;
 
+import com.ngsolutions.SmartMall.model.dto.order.OrderDTO;
 import com.ngsolutions.SmartMall.model.dto.product.ProductDisplayDTO;
 import com.ngsolutions.SmartMall.model.dto.product.ProductsAddBindingModel;
 import com.ngsolutions.SmartMall.service.CategoryService;
 import com.ngsolutions.SmartMall.service.CurrencyService;
+import com.ngsolutions.SmartMall.service.OrderService;
 import com.ngsolutions.SmartMall.service.ProductService;
 import jakarta.validation.Valid;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
-import java.util.Currency;
 
 @Controller
 public class ProductController {
@@ -24,11 +27,13 @@ public class ProductController {
     private final ProductService productService;
     private final CategoryService categoryService;
     private final CurrencyService currencyService;
+    private final OrderService orderService;
 
-    public ProductController(ProductService productService, CategoryService categoryService, CurrencyService currencyService) {
+    public ProductController(ProductService productService, CategoryService categoryService, CurrencyService currencyService, OrderService orderService) {
         this.productService = productService;
         this.categoryService = categoryService;
         this.currencyService = currencyService;
+        this.orderService = orderService;
     }
 
     @GetMapping("/products/add")
@@ -91,5 +96,15 @@ public class ProductController {
         productService.delete(Long.parseLong(id));
 
         return ("redirect:/products/all/" + categoryId);
+    }
+
+    @GetMapping("/products/add-to-shopping-cart/{id}")
+    public String addProductToShoppingCart(@PathVariable String id, @AuthenticationPrincipal UserDetails userDetails) {
+        ProductDisplayDTO product = this.productService.getProductDisplayDTOById(Long.parseLong(id));
+        OrderDTO orderDTO = this.orderService.getActiveOrderForUser(userDetails);
+
+        this.orderService.addProductToOrder(orderDTO, product);
+
+        return ("redirect:/products/all/" + product.getCategoryId());
     }
 }

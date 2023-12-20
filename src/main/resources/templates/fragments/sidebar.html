@@ -5,41 +5,45 @@
                 <i class='bx bx-menu' id="header-toggle"></i>
             </div>
 
-            <div class="nav_list" th:each="category: ${categories}">
-                <a th:href="@{/products/all/{id}(id=${category.getId()})}" th:id="${category.getHtmlId()}"  class="nav_link">
-                    <img class='nav_icon' th:src="*{category.photo}" />
+            <div class="nav_list" th:each="category: ${categories}" style="display: flex; justify-content: space-between;">
+                <a th:href="@{/products/all/{id}(id=${category.getId()})}" th:id="${category.getHtmlId()}"
+                   class="nav_link" style="width: 0px;">
+                    <img class='nav_icon' th:src="*{category.photo}"/>
                     <span class="nav_name" th:text="*{category.name}">Name</span>
-                    <div class="edit-delete-icons">
+                    <div class="edit-delete-icons" style="padding-top: 11px;">
                         <a th:href="@{/categories/edit/{id}(id=${category.getId()})}">
                             <i class='bx bx-edit-alt add-edit-delete-icons'></i>
                         </a>
-                        <a href="#deleteModal" data-toggle="modal">
-                            <i class='bx bx-trash add-edit-delete-icons'></i>
+                        <a onclick="toggleModal(event)" th:id="${category.id}" data-toggle="modal">
+                            <i th:id="${category.id}" class='bx bx-trash add-edit-delete-icons'></i>
                         </a>
                     </div>
                 </a>
+            </div>
 
-                <div id="deleteModal" class="modal fade">
-                    <div class="modal-dialog modal-confirm">
-                        <div class="modal-content">
-                            <div class="modal-header flex-column">
-                                <div class="icon-box">
-                                    <i class="material-icons">&#xE5CD;</i>
-                                </div>
-                                <h4 class="modal-title w-100">Are you sure?</h4>
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                                    &times;
-                                </button>
+            <div id="deleteModal" class="modal fade">
+                <div class="modal-dialog modal-confirm">
+                    <div class="modal-content">
+                        <div class="modal-header flex-column">
+                            <div class="icon-box">
+                                <i class="material-icons">&#xE5CD;</i>
                             </div>
-                            <div class="modal-body">
-                                <p>Do you really want to delete this category? This process cannot be undone!</p>
-                            </div>
-                            <div class="modal-footer justify-content-center">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                <a th:href="@{/categories/delete/{id}(id=${category.id})}">
-                                    <button type="button" class="btn btn-danger">Delete</button>
-                                </a>
-                            </div>
+                            <h4 class="modal-title w-100">Are you sure?</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                                &times;
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Do you really want to delete this category? This process cannot be undone!</p>
+                        </div>
+                        <div class="modal-footer justify-content-center">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <form th:method="POST"
+                                  th:action="@{/categories/delete/{id}}"
+                            id="delete-form">
+                                <input type="hidden" id="hidden-id" name="id">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -47,3 +51,17 @@
         </nav>
     </div>
 </div>
+<script>
+    function toggleModal(e){
+        var myModal = new bootstrap.Modal(document.getElementById('deleteModal'), {
+            keyboard: false
+        })
+        const categoryId = e.target.id;
+        console.log(e)
+        document.getElementById('hidden-id').value = categoryId;
+        document.getElementById('delete-form').action = '/categories/delete/'+ categoryId;
+        myModal.toggle();
+    }
+
+
+</script>
